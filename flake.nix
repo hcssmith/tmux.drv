@@ -2,27 +2,32 @@
   description = "A very basic flake";
 
   inputs = {
-    flake-lib.url = "github:hcssmith/flake-lib";
-    application-builders.url = "github:hcssmith/application-builders";
-    #application-builders.url = "git+file:///home/hcssmith/Projects/application-builders";
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    flake-lib = {
+      url = "github:hcssmith/flake-lib";
+      inputs.follows.follows = "nixpkgs";
+    };
+    application-builders = {
+      url = "github:hcssmith/application-builders";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     self,
     flake-lib,
     application-builders,
+    ...
   }:
     flake-lib.lib.mkApp {
       inherit self;
       name = "tmux";
       drv = p:
-        application-builders.lib.mkTmux rec {
+        application-builders.lib.mkTmux {
           pkgs = p;
           config = {
             prefix = "a";
             colourscheme = "chalk";
-            plugins = with pkgs; [
-            ];
           };
         };
     };
