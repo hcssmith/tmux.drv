@@ -5,7 +5,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-lib = {
       url = "github:hcssmith/flake-lib";
-      inputs.follows.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     application-builders = {
       url = "github:hcssmith/application-builders";
